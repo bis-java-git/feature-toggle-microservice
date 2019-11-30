@@ -19,7 +19,7 @@ public class DataLoader {
 //        featureRepository.save(new Feature("F1", true));
 //        featureRepository.save(new Feature("F2", false));
 //        featureRepository.save(new Feature("F3", true));
-    }
+   }
 
     @PreDestroy
     public void removeFeatures() {
