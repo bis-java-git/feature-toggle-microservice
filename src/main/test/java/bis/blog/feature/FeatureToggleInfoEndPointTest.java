@@ -74,7 +74,6 @@ public class FeatureToggleInfoEndPointTest {
         assertEquals(200, response.getStatus());
 
         ObjectMapper objectMapper = new ObjectMapper();
-        //objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         List<Feature> featureList = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<Feature>>() { });
         assertEquals(2, featureList.size());
         assertEquals("F1", featureList.get(0).getName());
