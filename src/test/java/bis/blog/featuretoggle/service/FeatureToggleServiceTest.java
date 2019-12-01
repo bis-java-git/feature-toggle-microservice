@@ -1,8 +1,8 @@
-package bis.blog.feature;
+package bis.blog.featuretoggle.service;
 
 import com.bis.blog.FeatureToggleApplication;
-import com.bis.blog.feature.Feature;
-import com.bis.blog.feature.FeatureService;
+import com.bis.blog.featuretoggle.domain.FeatureToggle;
+import com.bis.blog.featuretoggle.service.FeatureToggleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +19,18 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FeatureToggleApplication.class)
 @Transactional
-public class FeatureServiceTest {
+public class FeatureToggleServiceTest {
 
     @Autowired
-    private FeatureService featureService;
+    private FeatureToggleService featureToggleService;
 
     @Test
     public void testFindFeatureByName() {
 
-        featureService.saveFeature(new Feature("F1", true));
-        featureService.saveFeature(new Feature("F2", false));
+        featureToggleService.saveFeature(new FeatureToggle("F1", true));
+        featureToggleService.saveFeature(new FeatureToggle("F2", false));
 
-        Optional<Feature> features = featureService.findByName("F1");
+        Optional<FeatureToggle> features = featureToggleService.findByName("F1");
         assertEquals(true, features.isPresent());
         assertTrue(features.get().getName().contentEquals("F1"));
 
@@ -39,10 +39,10 @@ public class FeatureServiceTest {
     @Test
     public void testFindAllFeatures() {
 
-        featureService.saveFeature(new Feature("F1", true));
-        featureService.saveFeature(new Feature("F2", false));
+        featureToggleService.saveFeature(new FeatureToggle("F1", true));
+        featureToggleService.saveFeature(new FeatureToggle("F2", false));
 
-        List<Feature> all = featureService.findAll();
+        List<FeatureToggle> all = featureToggleService.findAll();
         assertEquals(2, all.size());
         assertTrue(all.get(0).getName().contentEquals("F1"));
 
@@ -51,11 +51,11 @@ public class FeatureServiceTest {
     @Test
     public void testDeleteFeature() {
 
-        featureService.saveFeature(new Feature("F1", true));
-        featureService.saveFeature(new Feature("F2", false));
+        FeatureToggle featureToggle1 = featureToggleService.saveFeature(new FeatureToggle("F1", true));
+        featureToggleService.saveFeature(new FeatureToggle("F2", false));
 
-        featureService.deleteFeature(new Feature("F2", false));
-        List<Feature> all = featureService.findAll();
+        featureToggleService.deleteFeature(featureToggle1.getId());
+        List<FeatureToggle> all = featureToggleService.findAll();
         assertEquals(1, all.size());
         assertTrue(all.get(0).getName().contentEquals("F1"));
 
@@ -64,10 +64,10 @@ public class FeatureServiceTest {
     @Test
     public void testSaveFeature() {
 
-        featureService.saveFeature(new Feature("F1", true));
-        featureService.saveFeature(new Feature("F2", false));
+        featureToggleService.saveFeature(new FeatureToggle("F1", true));
+        featureToggleService.saveFeature(new FeatureToggle("F2", false));
 
-        List<Feature> all = featureService.findAll();
+        List<FeatureToggle> all = featureToggleService.findAll();
         assertEquals(2, all.size());
         assertTrue(all.get(0).getName().contentEquals("F1"));
 

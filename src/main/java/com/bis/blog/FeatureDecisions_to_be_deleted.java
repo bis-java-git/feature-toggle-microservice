@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Component
 @ConfigurationProperties("feature")
-public class FeatureDecisions {
+public class FeatureDecisions_to_be_deleted {
 
     private Map<String, Boolean> toggles = new HashMap<>();
 

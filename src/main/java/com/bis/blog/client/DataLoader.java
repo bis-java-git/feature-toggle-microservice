@@ -1,7 +1,6 @@
-package com.bis.blog.demo;
+package com.bis.blog.client;
 
-import com.bis.blog.feature.Feature;
-import com.bis.blog.feature.FeatureRepository;
+import com.bis.blog.featuretoggle.repository.FeatureToggleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +11,7 @@ import javax.annotation.PreDestroy;
 public class DataLoader {
 
     @Autowired
-    private FeatureRepository featureRepository;
+    private FeatureToggleRepository featureToggleRepository;
 
     @PostConstruct
     public void loadFeatures() {

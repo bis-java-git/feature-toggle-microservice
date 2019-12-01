@@ -1,11 +1,9 @@
-package bis.blog.feature;
+package bis.blog.featuretoggle.controller;
 
 import com.bis.blog.FeatureToggleApplication;
-import com.bis.blog.feature.Feature;
-import com.bis.blog.feature.FeatureList;
-import com.bis.blog.feature.FeatureService;
+import com.bis.blog.featuretoggle.domain.FeatureToggle;
+import com.bis.blog.featuretoggle.service.FeatureToggleService;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import org.junit.After;
@@ -28,7 +26,6 @@ import javax.transaction.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,24 +35,23 @@ import static org.junit.Assert.assertEquals;
 @AutoConfigureMockMvc
 @Transactional
 @DirtiesContext
-public class FeatureToggleInfoEndPointTest {
+public class FeatureToggleControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    private FeatureService featureService;
+    private FeatureToggleService featureToggleService;
 
     @Before
     public void initializeFeatures() {
-        featureService.saveFeature(new Feature("F1", true));
-        featureService.saveFeature(new Feature("F2", false));
+        featureToggleService.saveFeature(new FeatureToggle("F1", true));
+        featureToggleService.saveFeature(new FeatureToggle("F2", false));
     }
 
     @After
     public void destroyFeatures() {
-        featureService.deleteFeature(new Feature("F1", true));
-        featureService.deleteFeature(new Feature("F2", false));
+        featureToggleService.deleteAll();
     }
 
     public <T> List<T> jsonArrayToObjectList(String json, Class<T> tClass) throws IOException {
@@ -67,15 +63,42 @@ public class FeatureToggleInfoEndPointTest {
 
 
     @Test
-    public void getAllFeatures() throws Exception {
+    public void getAllFeatureTogglessWithActuatorTest() throws Exception {
         ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/actuator/feature-toggles").accept(MediaType.APPLICATION_JSON));
         MvcResult mvcResult = perform.andReturn();
         MockHttpServletResponse response = mvcResult.getResponse();
         assertEquals(200, response.getStatus());
 
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Feature> featureList = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<Feature>>() { });
-        assertEquals(2, featureList.size());
-        assertEquals("F1", featureList.get(0).getName());
+        List<FeatureToggle> featureToggleList = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<FeatureToggle>>() { });
+        assertEquals(2, featureToggleList.size());
+        assertEquals("F1", featureToggleList.get(0).getName());
+    }
+
+    @Test
+    public void getAllFeatureTogglesTest() throws Exception {
+        ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/feature-toggle").accept(MediaType.APPLICATION_JSON));
+        MvcResult mvcResult = perform.andReturn();
+        MockHttpServletResponse response = mvcResult.getResponse();
+        assertEquals(200, response.getStatus());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<FeatureToggle> featureToggleList = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<FeatureToggle>>() { });
+        assertEquals(2, featureToggleList.size());
+        assertEquals("F1", featureToggleList.get(0).getName());
+    }
+
+    @Test
+    public void deleteFeatureToggleTest() throws Exception {
+        ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/feature-toggle").accept(MediaType.APPLICATION_JSON));
+
+        MvcResult mvcResult = perform.andReturn();
+        MockHttpServletResponse response = mvcResult.getResponse();
+        assertEquals(200, response.getStatus());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<FeatureToggle> featureToggleList = objectMapper.readValue(response.getContentAsString(), new TypeReference<List<FeatureToggle>>() { });
+        assertEquals(2, featureToggleList.size());
+        assertEquals("F1", featureToggleList.get(0).getName());
     }
 }

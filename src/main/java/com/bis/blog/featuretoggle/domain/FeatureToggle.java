@@ -1,4 +1,4 @@
-package com.bis.blog.feature;
+package com.bis.blog.featuretoggle.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonRootName(value = "feature")
-public class Feature implements Serializable {
+public class FeatureToggle implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,10 +25,10 @@ public class Feature implements Serializable {
     @JsonProperty("enabled")
     private Boolean enabled;
 
-    public Feature() {
+    public FeatureToggle() {
     }
 
-    public Feature(String name, Boolean enabled) {
+    public FeatureToggle(String name, Boolean enabled) {
         this.name = name;
         this.enabled = enabled;
     }
