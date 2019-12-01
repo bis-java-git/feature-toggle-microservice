@@ -55,9 +55,10 @@ public class FeatureToggleServiceTest {
         featureToggleService.saveFeature(new FeatureToggle("F2", false));
 
         featureToggleService.deleteFeature(featureToggle1.getId());
+
         List<FeatureToggle> all = featureToggleService.findAll();
         assertEquals(1, all.size());
-        assertTrue(all.get(0).getName().contentEquals("F1"));
+        assertTrue(all.get(0).getName().contentEquals("F2"));
 
     }
 
